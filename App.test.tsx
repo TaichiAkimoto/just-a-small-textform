@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { App } from "./App";
+import App from "./App";
 
 test("テキストフォームと送信ボタンが表示される", () => {
   const { queryByPlaceholderText, getByTestId, getByDisplayValue } = render(
