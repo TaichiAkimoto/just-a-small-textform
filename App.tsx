@@ -1,6 +1,6 @@
 import "./wdyr";
 
-import React, { useState, useCallback } from "react";
+import React, { memo, useState, useCallback, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -15,9 +15,11 @@ export default function App() {
     setValue(e);
   }, []);
 
+  const valueRef = useRef<string>("");
+  valueRef.current = value;
   const sendRequest = useCallback(() => {
-    console.log("value = ", value);
-  }, [value]);
+    console.log("value = ", valueRef.current);
+  }, []);
 
   const disabled = !value;
   return (
@@ -30,9 +32,22 @@ export default function App() {
       >
         <Text>送信する</Text>
       </TouchableHighlight>
+      <VeryHeavyComponent {...{ sendRequest }} />
     </View>
   );
 }
+
+interface Props {
+  sendRequest: () => void;
+}
+const VeryHeavyComponent = memo(({ sendRequest }: Props) => {
+  console.log("rerendered");
+  return (
+    <TouchableHighlight onPress={sendRequest}>
+      <Text>I am heavy</Text>
+    </TouchableHighlight>
+  );
+});
 
 const styles = StyleSheet.create({
   container: {
